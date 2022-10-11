@@ -1,0 +1,27 @@
+[
+    {
+        "id": "1",
+        "title": "Laptop",
+        "price": 333
+    },
+    {
+        "id": "2",
+        "title": "Mobile",
+        "price": 776
+    },
+    {
+        "id": "3",
+        "title": "Earphone",
+        "price": 333
+    },
+    {
+        "id": "4",
+        "title": "Mouse",
+        "price": 435
+    },
+    {
+        "id": "5",
+        "title": "Keyboard",
+        "price": 777
+    }
+]
