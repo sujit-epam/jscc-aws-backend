@@ -12,11 +12,7 @@ const hello: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) =
   } else {
     products = mockProducts
   }
-  return formatJSONResponse({
-    products,
-    // message: `Hello ${event.body.name}, welcome to the exciting Serverless world!`,
-    event,
-  });
+  return formatJSONResponse(products as any);
 };
 
 export const main = middyfy(hello);
