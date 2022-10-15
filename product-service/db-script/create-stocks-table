@@ -1,0 +1,9 @@
+aws dynamodb create-table \
+    --table-name stocks \
+    --attribute-definitions \
+        AttributeName=product_id,AttributeType=N \
+    --key-schema \
+        AttributeName=product_id,KeyType=HASH \
+    --provisioned-throughput \
+        ReadCapacityUnits=5,WriteCapacityUnits=5 \
+    --table-class STANDARD

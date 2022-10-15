@@ -1,0 +1,3 @@
+aws dynamodb put-item --table-name stocks --item '{"product_id":{"N":"1"},"count":{"N":"70"}}'
+
+aws dynamodb put-item --table-name stocks --item '{"product_id":{"N":"2"},"count":{"N":"40"}}'
