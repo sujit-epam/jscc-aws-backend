@@ -1,0 +1,3 @@
+aws dynamodb put-item --table-name products --item '{"id":{"N":"1"},"title":{"S":"Water Bottle"},"description":{"S":"Can store 2 Liters"},"price":{"N":"5"}}'
+
+aws dynamodb put-item --table-name products --item '{"id":{"N":"2"},"title":{"S":"Chair"},"description":{"S":"Ergonomic"},"price":{"N":"103"}}'
