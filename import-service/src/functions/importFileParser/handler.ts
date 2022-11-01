@@ -30,23 +30,13 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
         Key: `uploaded/${file.Key}`,
       };
       const s3Stream = s3.getObject(paramsForFile).createReadStream();
+      const daatChunks = [];
       s3Stream
         .pipe(csv())
-        .on('data', (data) => {
-          console.log('data::', data)
-        })
-        .on('error', (err) => {
-          console.log('ERROR::', err)
-        })
-        .on('end', () => {
-          console.log('READING COMPLETED!!')
-        });
+        .on("data", (daatChunk) => daatChunks.push(daatChunk))
+        .on("error", (err) => console.log("error", err))
+        .on("end", () => console.log(JSON.stringify(daatChunks, null, 2)));
     }
-    // body = JSON.stringify(
-    //   thumbnails
-    //     .filter(thumbnail => thumbnail.Size)
-    //     .map(thumbnail => `https://${BUCKET_NAME}.s3.amazonaws.com/${thumbnail.Key}`)
-    // )
   } catch(err) {
     console.error('Error appears:');
     console.error(err);
