@@ -1,0 +1,6 @@
+export const API_STATUS_CODES = {
+    OK: 200,
+    NOT_FOUND: 404,
+    INVALID_REQUEST: 400,
+    SERVER_ERROR: 500
+};
