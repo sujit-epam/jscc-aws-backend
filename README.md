@@ -1,16 +1,18 @@
-### Task-5
+### Task-6
 
-1. Frontend:
-    - Application URL: https://d2s4vtjjdp7wcf.cloudfront.net/admin/products
-    - PR: https://github.com/sujit-epam/shop-react-redux-cloudfront/pull/4
+1. Task 6.1
+Created a lambda function called catalogBatchProcess which will be triggered by an SQS event.
+Created an SQS queue called catalogItemsQueue, in the resources section of the same serverless.ts file.
+Configured the SQS to trigger lambda catalogBatchProcess with 5 messages at once via batchSize property.
+The lambda function iterates over all SQS messages and creates corresponding products in the products table.
 
-2. Backend:
-    1. APIs
-        1. GET https://e90oycwm21.execute-api.us-east-1.amazonaws.com/dev/import?name=<file-name>: Get S3 signed url
-        2. PUT <S3-signed-url>: Uploads csv file
+2. Task 6.2
+Updated the importFileParser lambda function in the Import Service to send each CSV record into SQS.
+It no longer logs entries from the readable stream to CloudWatch.
 
-- Created a new service called import-service
-- Created and configured a new S3 bucket with a folder called uploaded
-- Added lambda function importProductsFile that gets triggered by HTTP GET method to the endpoint "/import" which accepts "name" as query string param and returns S3 signed url of same.
-- Added lambda function importFileParser that gets triggered by HTTP PUT method to upload the file on S3-signed-url returnd by importProductsFile endpoint.
+3. Task 6.3
+Created an SNS topic createProductTopic and email subscription in the resources section in serverless.yml of the Product Service.
+Created a subscription for this SNS topic with an email endpoint type with my own email in there.
+Updated the catalogBatchProcess lambda function in the Product Service to send an event to the SNS topic once it creates products.
+
 

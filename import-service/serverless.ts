@@ -35,6 +35,18 @@ const serverlessConfiguration: AWS = {
       }
     ]
   },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'BATCH_PRODUCTS_UPLOAD_Q',
+          VisibilityTimeout: 300,
+          MessageRetentionPeriod: 86400,
+        }
+      },
+    }
+  },
   // import the function via paths
   functions: { hello, importProductsFile, importFileParser },
   package: { individually: true },

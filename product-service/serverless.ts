@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import { hello, createProduct } from '@functions/index';
+import { hello, createProduct, catalogBatchProcess } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -18,8 +18,34 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
   },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'BATCH_PRODUCTS_UPLOAD_Q',
+          VisibilityTimeout: 300,
+          MessageRetentionPeriod: 86400
+        }
+      },
+      ProductsUploadTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: "uploaded-products"
+        }
+      },
+      ProductsUploadEmailSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "sujit510@gmail.com",
+          Protocol: "email",
+          TopicArn: "arn:aws:sns:us-east-1:633521163208:ProductsUploadTopic"
+        }
+      },
+    }
+  },
   // import the function via paths
-  functions: { hello, createProduct },
+  functions: { hello, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     esbuild: {
