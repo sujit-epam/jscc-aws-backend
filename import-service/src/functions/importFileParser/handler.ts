@@ -3,6 +3,7 @@ import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
 const csv = require('csv-parser');
 import * as AWS from 'aws-sdk';
+import { notifyProduct } from 'src/service/queueService';
 const BUCKET_NAME = 'uploaded-jscc';
 
 import schema from './schema';
@@ -30,12 +31,15 @@ const importFileParser: ValidatedEventAPIGatewayProxyEvent<typeof schema> = asyn
         Key: `uploaded/${file.Key}`,
       };
       const s3Stream = s3.getObject(paramsForFile).createReadStream();
-      const daatChunks = [];
       s3Stream
-        .pipe(csv())
-        .on("data", (daatChunk) => daatChunks.push(daatChunk))
+        .pipe(csv({
+          headers: ["title", "description", "price", "count"],
+          mapValues: ({ header, value }) =>
+            ["price", "count"].includes(header) ? Number(value) : value,
+        }))
+        .on("data", (data) => notifyProduct(data))
         .on("error", (err) => console.log("error", err))
-        .on("end", () => console.log(JSON.stringify(daatChunks, null, 2)));
+        .on("end", () => console.log('parsing completed!!'));
     }
   } catch(err) {
     console.error('Error appears:');
